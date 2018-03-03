@@ -8260,15 +8260,21 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$Main$showProjectName = function (model) {
-	return model.showName ? A2(
+var _user$project$Main$toLi = function (item) {
+	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text(model.projectName),
+			_0: _elm_lang$html$Html$text(item),
 			_1: {ctor: '[]'}
-		}) : A2(
+		});
+};
+var _user$project$Main$showProjectName = function (model) {
+	return model.showName ? A2(
+		_elm_lang$html$Html$ul,
+		{ctor: '[]'},
+		A2(_elm_lang$core$List$map, _user$project$Main$toLi, model.projectNameList)) : A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
 		{ctor: '[]'});
@@ -8276,26 +8282,43 @@ var _user$project$Main$showProjectName = function (model) {
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		if (_p0.ctor === 'ProjectName') {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{projectName: _p0._0});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{showName: true});
+		switch (_p0.ctor) {
+			case 'NewProjectName':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{newProjectName: _p0._0});
+			case 'SaveName':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						showName: true,
+						projectNameList: {ctor: '::', _0: model.newProjectName, _1: model.projectNameList}
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						projectNameList: {ctor: '::', _0: model.newProjectName, _1: model.projectNameList}
+					});
 		}
 	});
-var _user$project$Main$model = {projectName: '', showName: false};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {projectName: a, showName: b};
+var _user$project$Main$model = {
+	newProjectName: '',
+	projectNameList: {ctor: '[]'},
+	showName: false
+};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {newProjectName: a, projectNameList: b, showName: c};
 	});
 var _user$project$Main$SaveName = function (a) {
 	return {ctor: 'SaveName', _0: a};
 };
-var _user$project$Main$ProjectName = function (a) {
-	return {ctor: 'ProjectName', _0: a};
+var _user$project$Main$ProjectNameList = function (a) {
+	return {ctor: 'ProjectNameList', _0: a};
+};
+var _user$project$Main$NewProjectName = function (a) {
+	return {ctor: 'NewProjectName', _0: a};
 };
 var _user$project$Main$view = function (model) {
 	return A2(
@@ -8313,7 +8336,7 @@ var _user$project$Main$view = function (model) {
 						_0: _elm_lang$html$Html_Attributes$placeholder('Project Name'),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$ProjectName),
+							_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$NewProjectName),
 							_1: {ctor: '[]'}
 						}
 					}
