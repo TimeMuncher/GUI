@@ -5,13 +5,15 @@ import Html.Events exposing (onInput, onClick)
 -- MODEL
 
 type alias Model = 
-  { projectName : String 
+  { newProjectName : String
+  , projectNameList : List String
   , showName : Bool
   }
 
 model : Model
 model = 
-  { projectName = ""
+  { newProjectName = ""
+  , projectNameList = []
   , showName = False
   }
 
@@ -19,17 +21,23 @@ model =
 -- UPDATE
 
 type Msg =
-  ProjectName String
+  NewProjectName String
+  | ProjectNameList List
   | SaveName Bool
 
 update : Msg -> Model -> Model 
 update msg model =
   case msg of
-    ProjectName name ->
-      { model | projectName = name }
+    NewProjectName name ->
+      { model | newProjectName = name }
 
     SaveName show ->
-      { model | showName = True }
+      { model | 
+          showName = True
+        , projectNameList = model.newProjectName::model.projectNameList} 
+
+    ProjectNameList _ ->
+      { model | projectNameList = model.newProjectName::model.projectNameList}
 
 
 -- VIEW
@@ -37,7 +45,7 @@ update msg model =
 view : Model -> Html Msg
 view model = 
   div []
-    [ input [type_ "text", placeholder "Project Name", onInput ProjectName] []
+    [ input [type_ "text", placeholder "Project Name", onInput NewProjectName] []
     , button [ onClick (SaveName True) ] [ text "Add Project" ]
     , showProjectName model
     ]
@@ -48,10 +56,13 @@ view model =
 showProjectName : Model -> Html Msg
 showProjectName model =
   if model.showName then
-    div [] [ text model.projectName]
+    ul [] (List.map toLi model.projectNameList)
   else 
     div [] []
 
+toLi : String -> Html Msg
+toLi item =
+  div [] [ text item]
 
 -- MAIN 
 
