@@ -1,3 +1,19 @@
+{-
+    Currently this is identical to main.elm and is
+    not being used
+-}
+
+
+module ProjectNameInput 
+  exposing 
+    ( Msg
+      ( ProjectName
+      , SaveName
+      )
+    , Model
+    , main
+    )
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick)
@@ -39,18 +55,7 @@ view model =
   div []
     [ input [type_ "text", placeholder "Project Name", onInput ProjectName] []
     , button [ onClick (SaveName True) ] [ text "Add Project" ]
-    , showProjectName model
     ]
-
-
--- Helper Functions
-
-showProjectName : Model -> Html Msg
-showProjectName model =
-  if model.showName then
-    div [] [ text model.projectName]
-  else 
-    div [] []
 
 
 -- MAIN 
