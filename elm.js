@@ -9033,98 +9033,35 @@ var _elm_lang$http$Http$StringPart = F2(
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
-var _user$project$Main$toLi = function (item) {
-	return A2(
-		_elm_lang$html$Html$li,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(item),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$Main$showProjectName = function (model) {
-	return model.showName ? A2(
-		_elm_lang$html$Html$ul,
-		{ctor: '[]'},
-		A2(_elm_lang$core$List$map, _user$project$Main$toLi, model.projectNameList)) : A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{ctor: '[]'});
-};
-var _user$project$Main$viewMessage = function (serverMessage) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h3,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(serverMessage),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$Main$viewError = function (errorMessage) {
-	var errorHeading = 'Hmm something went wrong...';
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h3,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(errorHeading),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(
-					A2(_elm_lang$core$Basics_ops['++'], 'Error: ', errorMessage)),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Main$showServerMessageOrError = function (model) {
-	var _p0 = model.errorMessage;
-	if (_p0.ctor === 'Just') {
-		return _user$project$Main$viewError(_p0._0);
-	} else {
-		return _user$project$Main$viewMessage(model.serverMessage);
-	}
-};
-var _user$project$Main$url = 'http://localhost:6767/';
-var _user$project$Main$model = {
-	newProjectName: '',
-	projectNameList: {ctor: '[]'},
-	showName: false,
-	serverMessage: '',
-	errorMessage: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Main$Model = F5(
+var _user$project$Types$Model = F5(
 	function (a, b, c, d, e) {
 		return {newProjectName: a, projectNameList: b, showName: c, serverMessage: d, errorMessage: e};
 	});
-var _user$project$Main$DataReceived = function (a) {
+var _user$project$Types$DataReceived = function (a) {
 	return {ctor: 'DataReceived', _0: a};
 };
-var _user$project$Main$update = F2(
+var _user$project$Types$SendHttpRequest = {ctor: 'SendHttpRequest'};
+var _user$project$Types$SaveName = function (a) {
+	return {ctor: 'SaveName', _0: a};
+};
+var _user$project$Types$ProjectNameList = function (a) {
+	return {ctor: 'ProjectNameList', _0: a};
+};
+var _user$project$Types$NewProjectName = function (a) {
+	return {ctor: 'NewProjectName', _0: a};
+};
+
+var _user$project$State$url = 'http://localhost:6767/';
+var _user$project$State$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
 			case 'NewProjectName':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{newProjectName: _p1._0}),
+						{newProjectName: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SaveName':
@@ -9154,16 +9091,16 @@ var _user$project$Main$update = F2(
 					_0: model,
 					_1: A2(
 						_elm_lang$http$Http$send,
-						_user$project$Main$DataReceived,
-						_elm_lang$http$Http$getString(_user$project$Main$url))
+						_user$project$Types$DataReceived,
+						_elm_lang$http$Http$getString(_user$project$State$url))
 				};
 			default:
-				if (_p1._0.ctor === 'Ok') {
+				if (_p0._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{serverMessage: _p1._0._0}),
+							{serverMessage: _p0._0._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -9171,17 +9108,82 @@ var _user$project$Main$update = F2(
 				}
 		}
 	});
-var _user$project$Main$SendHttpRequest = {ctor: 'SendHttpRequest'};
-var _user$project$Main$SaveName = function (a) {
-	return {ctor: 'SaveName', _0: a};
+var _user$project$State$init = {
+	newProjectName: '',
+	projectNameList: {ctor: '[]'},
+	showName: false,
+	serverMessage: '',
+	errorMessage: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Main$ProjectNameList = function (a) {
-	return {ctor: 'ProjectNameList', _0: a};
+
+var _user$project$Views_MainView$toLi = function (item) {
+	return A2(
+		_elm_lang$html$Html$li,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(item),
+			_1: {ctor: '[]'}
+		});
 };
-var _user$project$Main$NewProjectName = function (a) {
-	return {ctor: 'NewProjectName', _0: a};
+var _user$project$Views_MainView$showProjectName = function (model) {
+	return model.showName ? A2(
+		_elm_lang$html$Html$ul,
+		{ctor: '[]'},
+		A2(_elm_lang$core$List$map, _user$project$Views_MainView$toLi, model.projectNameList)) : A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{ctor: '[]'});
 };
-var _user$project$Main$view = function (model) {
+var _user$project$Views_MainView$viewMessage = function (serverMessage) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(serverMessage),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Views_MainView$viewError = function (errorMessage) {
+	var errorHeading = 'Hmm something went wrong...';
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h3,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(errorHeading),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], 'Error: ', errorMessage)),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Views_MainView$showServerMessageOrError = function (model) {
+	var _p0 = model.errorMessage;
+	if (_p0.ctor === 'Just') {
+		return _user$project$Views_MainView$viewError(_p0._0);
+	} else {
+		return _user$project$Views_MainView$viewMessage(model.serverMessage);
+	}
+};
+var _user$project$Views_MainView$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -9197,7 +9199,7 @@ var _user$project$Main$view = function (model) {
 						_0: _elm_lang$html$Html_Attributes$placeholder('Project Name'),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$NewProjectName),
+							_0: _elm_lang$html$Html_Events$onInput(_user$project$Types$NewProjectName),
 							_1: {ctor: '[]'}
 						}
 					}
@@ -9210,7 +9212,7 @@ var _user$project$Main$view = function (model) {
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Events$onClick(
-							_user$project$Main$SaveName(true)),
+							_user$project$Types$SaveName(true)),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -9220,7 +9222,7 @@ var _user$project$Main$view = function (model) {
 					}),
 				_1: {
 					ctor: '::',
-					_0: _user$project$Main$showProjectName(model),
+					_0: _user$project$Views_MainView$showProjectName(model),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -9232,7 +9234,7 @@ var _user$project$Main$view = function (model) {
 									_elm_lang$html$Html$button,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$SendHttpRequest),
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Types$SendHttpRequest),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -9242,7 +9244,7 @@ var _user$project$Main$view = function (model) {
 									}),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Main$showServerMessageOrError(model),
+									_0: _user$project$Views_MainView$showServerMessageOrError(model),
 									_1: {ctor: '[]'}
 								}
 							}),
@@ -9252,12 +9254,13 @@ var _user$project$Main$view = function (model) {
 			}
 		});
 };
+
 var _user$project$Main$main = _elm_lang$html$Html$program(
 	{
-		init: {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none},
-		update: _user$project$Main$update,
-		view: _user$project$Main$view,
-		subscriptions: function (_p2) {
+		init: {ctor: '_Tuple2', _0: _user$project$State$init, _1: _elm_lang$core$Platform_Cmd$none},
+		update: _user$project$State$update,
+		view: _user$project$Views_MainView$view,
+		subscriptions: function (_p0) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
